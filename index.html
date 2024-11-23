@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Price Estimator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            width: 50%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .output {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .output h3 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>House Price Estimator</h1>
+    <form id="priceForm">
+        <label for="house_name">House Name:</label>
+        <input type="text" id="house_name" required>
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" required>
+
+        <label for="distance_from_main_road">Distance from Main Road (in meters):</label>
+        <input type="number" id="distance_from_main_road" required>
+
+        <label for="age_of_house">Age of the House (in years):</label>
+        <input type="number" id="age_of_house" required>
+
+        <label for="house_condition">House Condition (1 for New, 0 for Resell):</label>
+        <input type="number" id="house_condition" min="0" max="1" required>
+
+        <label for="distance_from_CBD">Distance from CBD (in km):</label>
+        <input type="number" id="distance_from_CBD" required>
+
+        <label for="transport_facility">Transport Facility Rating (0-10):</label>
+        <input type="number" id="transport_facility" min="0" max="10" required>
+
+        <label for="distance_from_railway_station">Distance from Railway Station (in km):</label>
+        <input type="number" id="distance_from_railway_station" required>
+
+        <label for="distance_from_bus_depot">Distance from Bus Depot (in km):</label>
+        <input type="number" id="distance_from_bus_depot" required>
+
+        <label for="medical_facility">Medical Facility Rating (0-10):</label>
+        <input type="number" id="medical_facility" min="0" max="10" required>
+
+        <label for="school_facility">School Facility Rating (0-10):</label>
+        <input type="number" id="school_facility" min="0" max="10" required>
+
+        <label for="infrastructure_quality">Infrastructure Quality Rating (0-10):</label>
+        <input type="number" id="infrastructure_quality" min="0" max="10" required>
+
+        <label for="land_area">Land Area (in square feet):</label>
+        <input type="number" id="land_area" required>
+
+        <label for="house_area">House Area (in square feet):</label>
+        <input type="number" id="house_area" required>
+
+        <label for="lift_availability">Is there a lift? (1 for Yes, 0 for No):</label>
+        <input type="number" id="lift_availability" min="0" max="1" required>
+
+        <label for="number_of_storeys">Number of Storeys:</label>
+        <input type="number" id="number_of_storeys" required>
+
+        <label for="number_of_bedrooms">Number of Bedrooms:</label>
+        <input type="number" id="number_of_bedrooms" required>
+
+        <label for="car_parking_area">Car Parking Area (in square feet):</label>
+        <input type="number" id="car_parking_area" required>
+
+        <label for="under_municipal_corp">Under Municipal Corporation? (1 for Yes, 0 for No):</label>
+        <input type="number" id="under_municipal_corp" min="0" max="1" required>
+
+        <button type="button" onclick="calculatePrice()">Calculate Price</button>
+    </form>
+
+    <div id="output" class="output">
+        <h3>Estimated Price:</h3>
+        <p>The estimated price of the house is: <span id="priceOutput"></span></p>
+    </div>
+</div>
+
+<script>
+    function calculatePrice() {
+        // Get input values
+        const house_name = document.getElementById("house_name").value;
+        const location = document.getElementById("location").value;
+        const distance_from_main_road = parseFloat(document.getElementById("distance_from_main_road").value);
+        const age_of_house = parseInt(document.getElementById("age_of_house").value);
+        const house_condition = parseInt(document.getElementById("house_condition").value);
+
+        const distance_from_CBD = parseFloat(document.getElementById("distance_from_CBD").value);
+        const transport_facility = parseFloat(document.getElementById("transport_facility").value);
+        const distance_from_railway_station = parseFloat(document.getElementById("distance_from_railway_station").value);
+        const distance_from_bus_depot = parseFloat(document.getElementById("distance_from_bus_depot").value);
+        const medical_facility = parseFloat(document.getElementById("medical_facility").value);
+        const school_facility = parseFloat(document.getElementById("school_facility").value);
+        const infrastructure_quality = parseFloat(document.getElementById("infrastructure_quality").value);
+        const land_area = parseFloat(document.getElementById("land_area").value);
+        const house_area = parseFloat(document.getElementById("house_area").value);
+        const lift_availability = parseInt(document.getElementById("lift_availability").value);
+        const number_of_storeys = parseInt(document.getElementById("number_of_storeys").value);
+        const number_of_bedrooms = parseInt(document.getElementById("number_of_bedrooms").value);
+        const car_parking_area = parseFloat(document.getElementById("car_parking_area").value);
+        const under_municipal_corp = parseInt(document.getElementById("under_municipal_corp").value);
+
+        // Calculate price (same formula as in C)
+        let price = 0;
+
+        price += (1000 * distance_from_CBD);
+        price -= (1000 * transport_facility);
+        price += (1500 * distance_from_railway_station);
+        price += (700 * distance_from_bus_depot);
+        price += (300 * medical_facility);
+        price += (350 * school_facility);
+        price += (400 * infrastructure_quality);
+        price += (2000 * land_area);
+        price += (2500 * house_area);
+        price += (5000 * lift_availability);
+        price += (50000 * number_of_storeys);
+        price += (25000 * number_of_bedrooms);
+        price += (50 * car_parking_area);
+        
+        // New Parameters
+        price += (1000 * distance_from_main_road);  // Price decreases with distance from main road
+        price -= (1000 * age_of_house);  // Older houses tend to decrease in price
+        if (house_condition === 1) {
+            price += 50000;  // Premium for new houses
+        }
+
+        if (under_municipal_corp) {
+            price += 20000;  // Price premium for Municipal Corporation area
+        } else {
+            price -= 5000;  // Discount for Panchayat area
+        }
+
+        // Display the estimated price
+        document.getElementById("priceOutput").textContent = "Rs. " + price.toFixed(2);
+        document.getElementById("output").style.display = "block";
+    }
+</script>
+
+</body>
+</html>
